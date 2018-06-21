@@ -11,42 +11,28 @@ $('.menu-btn').on('click', function(e) {
 });
 
 function google_map () {
-  function getLocation() {
-    if (navigator.geolocation) {         
-        navigator.geolocation.getCurrentPosition(open_map); 
-    } else {
-        console.log("Not allowed");
+  $.ajax({
+    url: "/api/ip"
+  }).done(function(ip) {
+    var json = $.parseJSON(ip)
+    var CD = {
+      lat:json.lat,
+      lng:json.lon
     }
-}
-function open_map (coordinates){
-  var dd = {lat:coordinates.coords.latitude, lng: coordinates.coords.longitude};
     new window.google.maps.Map(document.getElementById('map'), {
-    zoom: 10,
-    center: new window.google.maps.LatLng(dd)
+      zoom: 10,
+      center: new window.google.maps.LatLng(CD)
+    });
   });
-}
-getLocation();
 }
 google_map();
 
 class LocationSearchInput extends React.Component {
   constructor(props) {
     super(props);  
-    this.state = { address: '', response: '' }
+    this.state = { address: ''}
   }
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res }))
-      .catch(err => console.log(err));
-  }
-  callApi = async () => {
-    const response = await fetch('/api/hello');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
- 
   handleChange = (address) => {
     this.setState({ address })
   }
@@ -55,8 +41,12 @@ class LocationSearchInput extends React.Component {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
-        var data = JSON.parse(this.state.response);
-        // console.log(data);
+
+        $.ajax({
+          url: "raw.json"
+        }).done(function(data) {
+          // var data = $.parseJSON(resp)
+          console.log(data);
 
         var locations = [];
         for(var i=0; i < data.length; i++){
@@ -123,14 +113,25 @@ class LocationSearchInput extends React.Component {
                 }
                 
                 // var name = loc[0];
-                var info = 
-                "<ul>"+
-                "<li>Network: " + network + "</li>" +
-                "<li>Location id: " + loc[3] + "</li>" +
-                "<li>Ports available: " + loc[5] + "</li>" +
-                "<li>Ports in use: " + loc[6] + "</li>" +
-                "</ul>";
-                // $('#name').html(name);
+                var info =
+                "<h3>" + loc[0].toUpperCase() + "</h3>" +
+                "<div class='_info'>" + 
+                  "<div class='_row'>" +
+                    "<div class='_col'>" +
+                      "<p><b>Network:</b> " + network + "</p>" +
+                      "<p><b>Location id:</b>  " + loc[3] + "</p>" +
+                      "<p><b>Ports available:</b>  " + loc[5] + "</p>" +
+                    "</div>" +
+                    "<div class='_col'>" +
+                      "<p><b>Ports in use:</b>  " + loc[6] + "</p>" +
+                      "<p><b>Ports working:</b>  " + loc[7] + "</p>" +
+                      "<p><b>Property:</b>  " + loc[14] + "</p>" +
+                    "</div>" +
+                  "</div>" +
+                "</div>";
+               
+                
+                
                 $('#information').html(info);
                 infowindow.open(map, marker);
             });
@@ -140,6 +141,10 @@ class LocationSearchInput extends React.Component {
           } 
         }
         initGoogleMap();
+
+
+        });
+
       }) 
       .catch(error => console.error('Error', error))
   }
@@ -159,21 +164,7 @@ class LocationSearchInput extends React.Component {
                           <div id="title">
                               Charging stations nearby
                           </div>
-                          {/* <div className="section">
-                            <div className="menu-block">
-                              <nav className="menu-nav">
-                                <a href="#">Main</a>
-                                <a href="#">Portfolio</a>
-                                <a href="#">About</a>
-                                <a href="#">Contacts</a>
-                              </nav>
-                              
-                              <a href="" className="menu-btn">
-                                <span></span>
-                              </a>
-                              
-                            </div>
-                          </div> */}
+                         
                       </div>
                     
                       <div id="pac-container">
@@ -199,7 +190,7 @@ class LocationSearchInput extends React.Component {
                                   : { paddingLeft: '10px', color: 'white', cursor: 'pointer' };
                       return (
                         <div {...getSuggestionItemProps(suggestion, { className, style })}>
-                          <span>{suggestion.description}</span>
+                          <span><img src='pin.png' alt='marker' />{suggestion.description}</span>
                         </div>
                       )
                     })}
@@ -207,7 +198,7 @@ class LocationSearchInput extends React.Component {
                 <div id="map"></div>
               </div>
               <div className="container">
-                    <div id="information" ref="information"></div>
+                    <div className="information" id="information"></div>
               </div>
           </div>
         )}

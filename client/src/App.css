@@ -19,9 +19,22 @@
   z-index: 10; 
   padding-left: 10px;
 }
-/* #information {
 
-} */
+.information {
+  text-align: center;
+  background: #4d90fe;
+  color: white;
+  font-family: Roboto;
+}
+
+._row {
+  align-items: center;
+  display: inline-flex;
+}
+
+._col {
+  margin: 5px;
+}
 
 /* Optional: Makes the sample page fill the window. */
 html, body {
