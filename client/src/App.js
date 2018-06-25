@@ -33,7 +33,7 @@ function start (lat, lng) {
                   resp[i].postalcode, resp[i].phone, resp[i].numberofpoints, resp[i].comment, resp[i].powerkw];
       locations.push(smth);
   };
-  console.log(locations);
+//  console.log(locations);
   function initGoogleMap(){
       var bounds  = new window.google.maps.LatLngBounds();
       var image = {url: 'charger.png'};
@@ -114,12 +114,12 @@ function start (lat, lng) {
 
 function google_map () {
   $.ajax({
-    url: "/api/ip"
+    url: "https://ipapi.co/json/"
   }).done(function(ip) {
-    var json = $.parseJSON(ip)
+   // var json = $.parseJSON(ip)
     var CD = {
-      lat:json.lat,
-      lng:json.lon
+      lat:ip.latitude,
+      lng:ip.longitude
     }
     // new window.google.maps.Map(document.getElementById('map'), {
     //   zoom: 10,
