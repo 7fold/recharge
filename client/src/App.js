@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import * as $ from 'jquery';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 $('.menu-btn').on('click', function(e) {
@@ -73,21 +74,21 @@ function start (lat, lng) {
       map.fitBounds(bounds);      
       map.panToBounds(bounds); 
       window.google.maps.event.addListener(marker, 'click', function(){
-          map.setZoom(14);
+          map.setZoom(10);
           map.setCenter(this.getPosition());
           infowindow.close(); // Close previously opened infowindow
           infowindow.setContent( "<div id='infowindow'>"+ loc[1] +"</div>");
           
           var info =
-          "<h3>" + loc[1].toUpperCase() + "</h3>" +
+          "<h3 class='text-center h3-info'>" + loc[1].toUpperCase() + "</h3>" +
           "<div class='_info'>" + 
-            "<div class='_row'>" +
-              "<div class='_col'>" +
+            "<div class='row'>" +
+              "<div class='col-md-4'>" +
                 "<p><b>Address:</b> " + loc[2] + "</p>" +
                 "<p><b>City:</b>  " + loc[3] + "</p>" +
                 "<p><b>Postal Code:</b>  " + loc[7] + "</p>" +
               "</div>" +
-              "<div class='_col'>" +
+              "<div class='col-md-8'>" +
                 "<p><b>Phone:</b>  " + loc[8] + "</p>" +
                 "<p><b>Comments:</b>  " + loc[10] + "</p>" +
                 "<p><b>Ports available:</b>  " + loc[9] + "</p>" +
@@ -96,11 +97,17 @@ function start (lat, lng) {
             "</div>" +
           "</div>";
          
+         
+           
+         
           
           
           $('#information').html(info);
           infowindow.open(map, marker);
       });
+      window.google.maps.event.addListener(infowindow,'closeclick',function(){
+        $('#information').html("");
+     });
     }
     for(var i=0; i<locations.length; i++) {
       placeMarker( locations[i] );
