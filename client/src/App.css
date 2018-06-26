@@ -13,18 +13,13 @@
 }
 
 .information {
-  /* text-align: center;
-  background: #4d90fe;
-  color: white; */
   font-family: Roboto;
   height: 100%;
   width: 100%;
-  /* position:fixed;
-  z-index: 1;*/
   top: 0;
   left: 0; 
-  background-color: rgba(64, 123, 201, 0.5);
-  color: white;
+  background-color: white;
+  color: black;
   overflow-x: hidden; 
   transition: .3s ease;
 }
@@ -62,9 +57,6 @@ html, body {
 }
 
 .pac-card {
-  /* margin-bottom: 10px; */
-  /* margin: 10px 10px 0 10px;
-  border-radius: 2px 0 0 2px; */
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   outline: none;
@@ -90,7 +82,6 @@ html, body {
   width: 325px;
   height: 30px;
   display: block;
-  /* margin: 0 auto; */
 }
 
 #pac-input:focus {
